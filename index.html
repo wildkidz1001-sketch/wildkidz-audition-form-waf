@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WILDKIDZ — Official Application Portal | WOWLD ENTERTAINMENT</title>
+<style>
+  :root {
+    --bg-white: #FAFAFC;
+    --glass: rgba(255, 255, 255, 0.72);
+    --glass-strong: rgba(255, 255, 255, 0.88);
+    --border-silver: rgba(168, 176, 188, 0.42);
+    --silver-text: #6E7682;
+    --silver-bright: #4D5560;
+    --silver-light: #949CA8;
+    --silver-grad: linear-gradient(135deg, #555D68 0%, #9BA3B0 45%, #5C6570 100%);
+    --burgundy: #6E1C2B;
+    --red-accent: #C8283C;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(circle at 20% 10%, #FFFFFF 0%, #F2F4F8 55%, #E6EAF0 100%);
+    color: var(--silver-bright);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  #starCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .portal {
+    position: relative;
+    z-index: 1;
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 36px 18px 80px;
+  }
+
+  .liquid-glass {
+    background: var(--glass);
+    backdrop-filter: blur(26px) saturate(180%);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+    border: 1px solid var(--border-silver);
+    box-shadow:
+      0 14px 40px rgba(120, 130, 145, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    border-radius: 26px;
+  }
+
+  header.brand-header {
+    text-align: center;
+    padding: 28px 20px 24px;
+    margin-bottom: 18px;
+  }
+
+  .org-tag {
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--silver-light);
+    font-weight: 600;
+  }
+
+  .main-title {
+    margin-top: 8px;
+    font-size: clamp(30px, 7vw, 48px);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--silver-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .subtitle {
+    margin-top: 6px;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--silver-text);
+  }
+
+  .progress-wrap {
+    padding: 14px 18px;
+    margin-bottom: 18px;
+  }
+
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--silver-text);
+    margin-bottom: 10px;
+  }
+
+  .progress-track {
+    height: 5px;
+    border-radius: 99px;
+    background: rgba(148, 156, 168, 0.22);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 20%;
+    background: linear-gradient(90deg, #8F98A6, var(--burgundy), var(--red-accent));
+    transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .stage-card {
+    padding: 28px 22px;
+    animation: fadeSlide 0.38s ease;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .stage-num {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--burgundy);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .stage-heading {
+    margin-top: 6px;
+    font-size: clamp(22px, 5vw, 30px);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--silver-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 20px;
+  }
+
+  .field { margin-bottom: 16px; }
+
+  label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--silver-text);
+    margin-bottom: 7px;
+    font-weight: 600;
+  }
+
+  input, textarea, select {
+    width: 100%;
+    padding: 13px 15px;
+    border-radius: 16px;
+    border: 1px solid var(--border-silver);
+    background: var(--glass-strong);
+    color: var(--silver-bright);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input::placeholder, textarea::placeholder { color: var(--silver-light); }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--burgundy);
+    box-shadow: 0 0 0 3px rgba(110, 28, 43, 0.12);
+  }
+
+  textarea { min-height: 92px; resize: vertical; }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+
+  .chip {
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border-silver);
+    background: var(--glass-strong);
+    color: var(--silver-text);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .chip.active {
+    background: linear-gradient(135deg, var(--burgundy), var(--red-accent));
+    color: #FFFFFF;
+    border-color: transparent;
+    box-shadow: 0 6px 18px rgba(200, 40, 60, 0.22);
+  }
+
+  .media-box {
+    padding: 16px;
+    border-radius: 20px;
+    border: 1px dashed rgba(110, 118, 130, 0.45);
+    background: rgba(255, 255, 255, 0.55);
+    margin-bottom: 16px;
+  }
+
+  .row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--border-silver);
+    background: var(--glass-strong);
+    color: var(--silver-bright);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.2s ease;
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #6A7380, var(--burgundy));
+    color: #FFFFFF;
+    border: none;
+    box-shadow: 0 8px 22px rgba(110, 28, 43, 0.22);
+  }
+
+  .btn-red {
+    background: linear-gradient(135deg, var(--burgundy), var(--red-accent));
+    color: #FFFFFF;
+    border: none;
+  }
+
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .error-msg {
+    color: var(--red-accent);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    margin-top: 8px;
+    min-height: 18px;
+  }
+
+  .review-item {
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.62);
+    border: 1px solid var(--border-silver);
+    margin-bottom: 10px;
+    font-size: 13px;
+    color: var(--silver-text);
+  }
+
+  .review-item strong {
+    color: var(--silver-bright);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 11px;
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .preview-img {
+    max-width: 150px;
+    border-radius: 14px;
+    margin-top: 10px;
+    display: block;
+  }
+
+  .preview-img.white-bg {
+    background: #FFFFFF;
+    padding: 6px;
+    border: 1px solid var(--border-silver);
+  }
+
+  .star-badge {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 14px;
+    display: grid;
+    place-items: center;
+    animation: spinStar 9s linear infinite;
+  }
+
+  @keyframes spinStar {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+
+<main class="portal">
+  <header class="brand-header liquid-glass">
+    <div class="org-tag">WOWLD ENTERTAINMENT • A WORLD OF POSSIBILITIES</div>
+    <h1 class="main-title">WILDKIDZ</h1>
+    <div class="subtitle">Official Application Portal</div>
+  </header>
+
+  <section class="progress-wrap liquid-glass" id="progressSection">
+    <div class="progress-top">
+      <span id="progressLabel">STAGE 01 OF 05</span>
+      <span id="progressPct">20%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </section>
+
+  <section class="stage-card liquid-glass" id="stageContainer"></section>
+</main>
+
+<script>
+const STORAGE_KEY = "wildkidz_wk_portal_v1";
+const ROLES = ["Vocalist", "Rapper", "All-rounder", "Dancer", "Visual", "Lead vocalist", "Leader"];
+
+const state = Object.assign({
+  stage: 0,
+  reviewMode: false,
+  submitted: false,
+  fullName: "",
+  preferredName: "",
+  age: "",
+  dob: "",
+  email: "",
+  country: "",
+  languages: "",
+  roles: [],
+  experience: "",
+  practiceTime: "",
+  intro: "",
+  uniqueness: "",
+  favMusic: "",
+  passion: "",
+  auditionLink: "",
+  auditionFileName: "",
+  auditionFileUrl: "",
+  photoUrl: "",
+  whiteBgAssist: false,
+  photoSkipped: false,
+  whyWildkidz: "",
+  contribution: "",
+  timeDedication: "",
+  onlineReady: "",
+  guardianPermission: ""
+}, JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}"));
+
+function saveState() {
+  try {
+    const { auditionFileUrl, photoUrl, ...safe } = state;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(safe));
+  } catch (_) {}
+}
+
+function escapeHtml(str = "") {
+  return String(str).replace(/[&<>"']/g, m => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[m]));
+}
+
+function render() {
+  const box = document.getElementById("stageContainer");
+  const progSection = document.getElementById("progressSection");
+  const pct = Math.round(((state.stage + 1) / 5) * 100);
+  document.getElementById("progressLabel").textContent = state.reviewMode
+    ? "REVIEW & SUBMIT"
+    : `STAGE 0${state.stage + 1} OF 05`;
+  document.getElementById("progressPct").textContent = state.reviewMode ? "100%" : `${pct}%`;
+  document.getElementById("progressFill").style.width = state.reviewMode ? "100%" : `${pct}%`;
+  progSection.style.display = state.submitted ? "none" : "block";
+
+  if (state.submitted) {
+    box.innerHTML = `
+      <div style="text-align:center;padding:12px 4px;">
+        <div class="star-badge">
+          <svg viewBox="0 0 64 64" width="60" height="60">
+            <path d="M32 2 L38 26 L62 32 L38 38 L32 62 L26 38 L2 32 L26 26 Z"
+                  fill="#C4CCD6" stroke="#7A8390" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="stage-num" style="color:var(--red-accent);">APPLICATION RECEIVED</div>
+        <h2 class="stage-heading" style="margin-bottom:12px;">WELCOME TO WILDKIDZ</h2>
+        <p style="color:var(--silver-text);line-height:1.65;margin-bottom:22px;">
+          Thank you for your interest in WILDKIDZ. Your application has been saved locally under WOWLD Entertainment for ${escapeHtml(state.fullName || "Applicant")}. Contact: wildkidz1001@gmail.com
+        </p>
+        <button class="btn btn-primary" onclick="returnHome()">RETURN TO HOME</button>
+      </div>`;
+    return;
+  }
+
+  if (state.reviewMode) {
+    box.innerHTML = `
+      <div class="stage-num">FINAL STEP</div>
+      <h2 class="stage-heading">REVIEW APPLICATION</h2>
+      <div class="review-item"><strong>01 — Profile</strong>${escapeHtml(state.fullName)} (${escapeHtml(state.preferredName || "—")}) • Age ${escapeHtml(state.age)} • ${escapeHtml(state.email)} • ${escapeHtml(state.country)} • ${escapeHtml(state.languages)}</div>
+      <div class="review-item"><strong>02 — Category & Skills</strong>Roles: ${escapeHtml(state.roles.join(", ") || "None")} • Practice: ${escapeHtml(state.practiceTime || "—")} • Experience: ${escapeHtml(state.experience || "—")}</div>
+      <div class="review-item"><strong>03 — About You & Interests</strong>Intro: ${escapeHtml(state.intro || "—")} • Music: ${escapeHtml(state.favMusic || "—")} • Passion: ${escapeHtml(state.passion || "—")}</div>
+      <div class="review-item"><strong>04 — Audition & Visual</strong>Link/File: ${escapeHtml(state.auditionLink || state.auditionFileName || "Optional / None")} • Photo: ${state.photoSkipped ? "Skipped" : (state.photoUrl ? (state.whiteBgAssist ? "Uploaded + White BG" : "Uploaded") : "Optional / None")}</div>
+      <div class="review-item"><strong>05 — Availability & Why WILDKIDZ</strong>Why: ${escapeHtml(state.whyWildkidz || "—")} • Time: ${escapeHtml(state.timeDedication || "—")} • Guardian (U18): ${escapeHtml(state.guardianPermission || "—")}</div>
+      <div class="error-msg" id="errMsg"></div>
+      <div class="nav-bar">
+        <button class="btn" onclick="backFromReview()">EDIT STAGES</button>
+        <button class="btn btn-red" onclick="submitApp()">SUBMIT APPLICATION</button>
+      </div>`;
+    return;
+  }
+
+  const stages = [
+    `
+      <div class="stage-num">01 — PROFILE</div>
+      <h2 class="stage-heading">APPLICANT PROFILE</h2>
+      <div class="field"><label>Full Name *</label><input id="fullName" value="${escapeHtml(state.fullName)}" placeholder="Your full name"></div>
+      <div class="field"><label>Preferred Name</label><input id="preferredName" value="${escapeHtml(state.preferredName)}" placeholder="Stage or nickname"></div>
+      <div class="field"><label>Age *</label><input id="age" type="number" value="${escapeHtml(state.age)}" placeholder="Age"></div>
+      <div class="field"><label>Date of Birth *</label><input id="dob" type="date" value="${escapeHtml(state.dob)}"></div>
+      <div class="field"><label>Email Address *</label><input id="email" type="email" value="${escapeHtml(state.email)}" placeholder="name@example.com"></div>
+      <div class="field"><label>Country of Residence *</label><input id="country" value="${escapeHtml(state.country)}" placeholder="Country"></div>
+      <div class="field"><label>Languages Spoken *</label><input id="languages" value="${escapeHtml(state.languages)}" placeholder="e.g. English, Korean"></div>
+    `,
+    `
+      <div class="stage-num">02 — CATEGORY & SKILLS</div>
+      <h2 class="stage-heading">CATEGORY & EXPERIENCE</h2>
+      <label>Select Categories (Multiple Allowed) *</label>
+      <div class="chips" id="roleChips">
+        ${ROLES.map(r => `<button type="button" class="chip ${state.roles.includes(r) ? "active" : ""}" data-role="${r}">${r}</button>`).join("")}
+      </div>
+      <div class="field"><label>How long have you practised your main talent? *</label><input id="practiceTime" value="${escapeHtml(state.practiceTime)}" placeholder="e.g. 3 years"></div>
+      <div class="field"><label>Performance Experience & Training</label><textarea id="experience" placeholder="Past performances, vocal/dance training, or achievements">${escapeHtml(state.experience)}</textarea></div>
+    `,
+    `
+      <div class="stage-num">03 — ABOUT YOU & INTERESTS</div>
+      <h2 class="stage-heading">IDENTITY & INTERESTS</h2>
+      <div class="field"><label>Introduce Yourself & Personality *</label><textarea id="intro" placeholder="Tell us who you are and your personality">${escapeHtml(state.intro)}</textarea></div>
+      <div class="field"><label>What Makes You Unique? *</label><input id="uniqueness" value="${escapeHtml(state.uniqueness)}" placeholder="Your distinct edge"></div>
+      <div class="field"><label>Favourite Music, Artists & Genres *</label><input id="favMusic" value="${escapeHtml(state.favMusic)}" placeholder="Artists, groups, genres, or favourite song"></div>
+      <div class="field"><label>Creative Passions & Free Time</label><input id="passion" value="${escapeHtml(state.passion)}" placeholder="Acting, styling, songwriting, hobbies"></div>
+    `,
+    `
+      <div class="stage-num">04 — AUDITION & VISUAL</div>
+      <h2 class="stage-heading">MUSIC TEST & VISUAL</h2>
+      <div class="media-box">
+        <label>Optional Audio / Video Audition Link (Vocal, Rap, Dance, Performance)</label>
+        <input id="auditionLink" value="${escapeHtml(state.auditionLink)}" placeholder="https://... (YouTube, Drive, or performance link)">
+        <div class="field" style="margin-top:12px;margin-bottom:0;">
+          <label>Or Upload Audio / Video File</label>
+          <input id="auditionFile" type="file" accept="audio/*,video/*">
+        </div>
+        ${state.auditionFileName ? `<div class="review-item" style="margin-top:10px;">Selected: ${escapeHtml(state.auditionFileName)} <button type="button" class="btn" style="padding:5px 10px;margin-left:8px;" onclick="clearAudition()">REMOVE</button></div>` : ""}
+      </div>
+      <div class="media-box">
+        <label>Optional Profile Photo (White BG, Clear Lighting, No Heavy Filters)</label>
+        <input id="photoFile" type="file" accept="image/*">
+        <div class="row-actions">
+          <button type="button" class="btn" onclick="toggleWhiteBg()">AI WHITE BG: ${state.whiteBgAssist ? "ON" : "OFF"}</button>
+          <button type="button" class="btn" onclick="skipPhoto()">SKIP</button>
+          ${state.photoUrl ? `<button type="button" class="btn" onclick="clearPhoto()">REMOVE</button>` : ""}
+        </div>
+        ${state.photoUrl && !state.photoSkipped ? `<img src="${state.photoUrl}" alt="Preview" class="preview-img ${state.whiteBgAssist ? "white-bg" : ""}">` : ""}
+        ${state.photoSkipped ? `<div class="error-msg" style="color:var(--silver-text);">Profile photo skipped.</div>` : ""}
+      </div>
+    `,
+    `
+      <div class="stage-num">05 — AVAILABILITY & WHY WILDKIDZ?</div>
+      <h2 class="stage-heading">WHY WILDKIDZ?</h2>
+      <div class="field"><label>Why did you apply & what interests you about WILDKIDZ? *</label><textarea id="whyWildkidz" placeholder="Share your motivation for joining WILDKIDZ">${escapeHtml(state.whyWildkidz)}</textarea></div>
+      <div class="field"><label>What could you contribute to the team? *</label><textarea id="contribution" placeholder="Your teamwork, energy, and creative value">${escapeHtml(state.contribution)}</textarea></div>
+      <div class="field"><label>Weekly Time Dedication & Online / Global Readiness *</label><input id="timeDedication" value="${escapeHtml(state.timeDedication)}" placeholder="Hours per week, online meetings, international collaboration"></div>
+      <div class="field"><label>Parental / Guardian Permission (Required if under 18)</label><input id="guardianPermission" value="${escapeHtml(state.guardianPermission)}" placeholder="Yes / No / N/A"></div>
+    `
+  ];
+
+  box.innerHTML = `
+    ${stages[state.stage]}
+    <div class="error-msg" id="errMsg"></div>
+    <div class="nav-bar">
+      <button type="button" class="btn" onclick="prevStage()" ${state.stage === 0 ? "disabled style='opacity:0.45;'" : ""}>PREVIOUS</button>
+      <button type="button" class="btn btn-primary" onclick="nextStage()">${state.stage === 4 ? "REVIEW" : "NEXT"}</button>
+    </div>
+  `;
+
+  bindInputs();
+}
+
+function bindInputs() {
+  document.querySelectorAll("input, textarea").forEach(el => {
+    if (el.type === "file") return;
+    el.addEventListener("input", () => {
+      state[el.id] = el.value;
+      saveState();
+    });
+  });
+
+  document.querySelectorAll("#roleChips .chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const r = chip.dataset.role;
+      state.roles = state.roles.includes(r) ? state.roles.filter(x => x !== r) : [...state.roles, r];
+      saveState();
+      render();
+    });
+  });
+
+  const audFile = document.getElementById("auditionFile");
+  if (audFile) {
+    audFile.addEventListener("change", e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      state.auditionFileName = f.name;
+      state.auditionFileUrl = URL.createObjectURL(f);
+      render();
+    });
+  }
+
+  const pFile = document.getElementById("photoFile");
+  if (pFile) {
+    pFile.addEventListener("change", e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        state.photoUrl = reader.result;
+        state.photoSkipped = false;
+        render();
+      };
+      reader.readAsDataURL(f);
+    });
+  }
+}
+
+function clearAudition() { state.auditionFileName = ""; state.auditionFileUrl = ""; render(); }
+function toggleWhiteBg() { state.whiteBgAssist = !state.whiteBgAssist; render(); }
+function skipPhoto() { state.photoSkipped = true; state.photoUrl = ""; render(); }
+function clearPhoto() { state.photoUrl = ""; state.photoSkipped = false; render(); }
+
+function validateStage(idx) {
+  const err = document.getElementById("errMsg");
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email.trim());
+  if (idx === 0 && (!state.fullName.trim() || !state.age || !state.dob || !emailOk || !state.country.trim() || !state.languages.trim())) {
+    err.textContent = "Please complete full name, age, date of birth, valid email, country, and languages.";
+    return false;
+  }
+  if (idx === 1 && (!state.roles.length || !state.practiceTime.trim())) {
+    err.textContent = "Select at least one category and enter your practice duration.";
+    return false;
+  }
+  if (idx === 2 && (!state.intro.trim() || !state.uniqueness.trim() || !state.favMusic.trim())) {
+    err.textContent = "Please complete your introduction, uniqueness, and favourite music.";
+    return false;
+  }
+  if (idx === 4 && (!state.whyWildkidz.trim() || !state.contribution.trim() || !state.timeDedication.trim())) {
+    err.textContent = "Please answer why WILDKIDZ, your team contribution, and availability.";
+    return false;
+  }
+  return true;
+}
+
+function nextStage() {
+  if (!validateStage(state.stage)) return;
+  saveState();
+  if (state.stage < 4) {
+    state.stage += 1;
+  } else {
+    state.reviewMode = true;
+  }
+  render();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function prevStage() {
+  if (state.stage > 0) {
+    state.stage -= 1;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+function backFromReview() { state.reviewMode = false; state.stage = 0; render(); }
+function submitApp() { state.submitted = true; saveState(); render(); }
+function returnHome() { state.submitted = false; state.reviewMode = false; state.stage = 0; render(); }
+
+/* Slow-motion falling silver stars (cherry-blossom drift) */
+const canvas = document.getElementById("starCanvas");
+const ctx = canvas.getContext("2d");
+let stars = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+for (let i = 0; i < 38; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: 3 + Math.random() * 5,
+    vy: 0.25 + Math.random() * 0.45,
+    swayAmp: 0.4 + Math.random() * 0.9,
+    swaySpeed: 0.008 + Math.random() * 0.012,
+    phase: Math.random() * Math.PI * 2,
+    rot: Math.random() * Math.PI,
+    vRot: (Math.random() - 0.5) * 0.008,
+    alpha: 0.28 + Math.random() * 0.45
+  });
+}
+
+function drawFourPointStar(s) {
+  ctx.save();
+  ctx.translate(s.x, s.y);
+  ctx.rotate(s.rot);
+  ctx.globalAlpha = s.alpha;
+  const outer = s.r * 2.1;
+  const inner = s.r * 0.45;
+  ctx.beginPath();
+  for (let i = 0; i < 8; i++) {
+    const rad = i % 2 === 0 ? outer : inner;
+    const ang = (i * Math.PI) / 4;
+    const px = Math.cos(ang) * rad;
+    const py = Math.sin(ang) * rad;
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.fillStyle = "#B8C0CC";
+  ctx.fill();
+  ctx.restore();
+}
+
+function animateStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (const s of stars) {
+    s.phase += s.swaySpeed;
+    s.x += Math.sin(s.phase) * s.swayAmp;
+    s.y += s.vy;
+    s.rot += s.vRot;
+    if (s.y > canvas.height + 24) {
+      s.y = -24;
+      s.x = Math.random() * canvas.width;
+    }
+    if (s.x < -24) s.x = canvas.width + 24;
+    if (s.x > canvas.width + 24) s.x = -24;
+    drawFourPointStar(s);
+  }
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+render();
+</script>
+</body>
+</html>
