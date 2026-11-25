@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>WILDKIDZ — Official Application Portal | WOWLD ENTERTAINMENT</title>
+<style>
+  :root {
+    --glass: rgba(255, 255, 255, 0.74);
+    --glass-strong: rgba(255, 255, 255, 0.9);
+    --border-silver: rgba(162, 172, 186, 0.48);
+    --silver-text: #6B7482;
+    --silver-bright: #4B535F;
+    --silver-light: #939CA9;
+    --silver-grad: linear-gradient(135deg, #4E5662 0%, #9FA8B6 45%, #58616E 100%);
+    --burgundy: #6E1C2B;
+    --red-accent: #C8283C;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    background: radial-gradient(circle at 20% 10%, #FFFFFF 0%, #F1F4F8 55%, #E3E8F0 100%);
+    color: var(--silver-bright);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  #starCanvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .portal {
+    position: relative;
+    z-index: 1;
+    max-width: 660px;
+    margin: 0 auto;
+    padding: 34px 18px 90px;
+  }
+
+  .liquid-glass {
+    background: var(--glass);
+    backdrop-filter: blur(26px) saturate(180%);
+    -webkit-backdrop-filter: blur(26px) saturate(180%);
+    border: 1px solid var(--border-silver);
+    box-shadow:
+      0 14px 40px rgba(112, 122, 138, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.96);
+    border-radius: 26px;
+  }
+
+  header.brand-header {
+    text-align: center;
+    padding: 26px 20px 22px;
+    margin-bottom: 16px;
+  }
+
+  .org-tag {
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--silver-light);
+    font-weight: 600;
+  }
+
+  .main-title {
+    margin-top: 8px;
+    font-size: clamp(30px, 7vw, 48px);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: var(--silver-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .subtitle {
+    margin-top: 6px;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--silver-text);
+  }
+
+  .progress-wrap {
+    padding: 14px 18px;
+    margin-bottom: 16px;
+  }
+
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--silver-text);
+    margin-bottom: 10px;
+  }
+
+  .progress-track {
+    height: 5px;
+    border-radius: 99px;
+    background: rgba(148, 156, 168, 0.24);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 14.28%;
+    background: linear-gradient(90deg, #8F98A6, var(--burgundy), var(--red-accent));
+    transition: width 0.4s ease;
+  }
+
+  .stage-card {
+    padding: 26px 22px;
+    animation: fadeSlide 0.34s ease;
+  }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .stage-num {
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--burgundy);
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .stage-heading {
+    margin-top: 6px;
+    font-size: clamp(22px, 5vw, 30px);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--silver-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 20px;
+  }
+
+  .field { margin-bottom: 16px; }
+
+  label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--silver-text);
+    margin-bottom: 7px;
+    font-weight: 600;
+  }
+
+  input, textarea {
+    width: 100%;
+    padding: 13px 15px;
+    border-radius: 16px;
+    border: 1px solid var(--border-silver);
+    background: var(--glass-strong);
+    color: var(--silver-bright);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  input::placeholder, textarea::placeholder { color: var(--silver-light); }
+
+  input:focus, textarea:focus {
+    border-color: var(--burgundy);
+    box-shadow: 0 0 0 3px rgba(110, 28, 43, 0.12);
+  }
+
+  textarea { min-height: 92px; resize: vertical; }
+
+  .compliment {
+    margin-top: 10px;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    color: var(--burgundy);
+    font-weight: 600;
+    min-height: 20px;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .chip {
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border-silver);
+    background: var(--glass-strong);
+    color: var(--silver-text);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .chip.active {
+    background: linear-gradient(135deg, var(--burgundy), var(--red-accent));
+    color: #FFFFFF;
+    border-color: transparent;
+    box-shadow: 0 6px 18px rgba(200, 40, 60, 0.22);
+  }
+
+  .media-box {
+    padding: 16px;
+    border-radius: 20px;
+    border: 1px dashed rgba(110, 118, 130, 0.48);
+    background: rgba(255, 255, 255, 0.58);
+    margin-bottom: 16px;
+  }
+
+  .row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: 1px solid var(--border-silver);
+    background: var(--glass-strong);
+    color: var(--silver-bright);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.2s ease;
+  }
+
+  .btn:hover { transform: translateY(-1px); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #6A7380, var(--burgundy));
+    color: #FFFFFF;
+    border: none;
+    box-shadow: 0 8px 22px rgba(110, 28, 43, 0.22);
+  }
+
+  .btn-red {
+    background: linear-gradient(135deg, var(--burgundy), var(--red-accent));
+    color: #FFFFFF;
+    border: none;
+  }
+
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 22px;
+  }
+
+  .error-msg {
+    color: var(--red-accent);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    margin-top: 8px;
+    min-height: 18px;
+  }
+
+  .preview-img {
+    max-width: 150px;
+    border-radius: 14px;
+    margin-top: 10px;
+    display: block;
+  }
+
+  .preview-img.white-bg {
+    background: #FFFFFF;
+    padding: 6px;
+    border: 1px solid var(--border-silver);
+  }
+
+  .dossier-stage {
+    text-align: center;
+    padding: 20px 8px;
+  }
+
+  .folder-emblem {
+    font-size: 56px;
+    line-height: 1;
+    margin: 14px auto;
+    display: inline-block;
+    filter: drop-shadow(0 8px 18px rgba(110, 122, 138, 0.35));
+    transform: scale(0.4);
+    opacity: 0;
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+  }
+
+  .folder-emblem.formed {
+    transform: scale(1);
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+<canvas id="starCanvas"></canvas>
+
+<main class="portal">
+  <header class="brand-header liquid-glass">
+    <div class="org-tag">WOWLD ENTERTAINMENT • A WORLD OF POSSIBILITIES</div>
+    <h1 class="main-title">WILDKIDZ</h1>
+    <div class="subtitle">Official Application Portal</div>
+  </header>
+
+  <section class="progress-wrap liquid-glass" id="progressSection">
+    <div class="progress-top">
+      <span id="progressLabel">STEP 01 OF 07</span>
+      <span id="progressPct">14%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </section>
+
+  <section class="stage-card liquid-glass" id="stageContainer"></section>
+</main>
+
+<script>
+const WEB3FORMS_ACCESS_KEY = "0e2b3565-4a66-40a3-80dc-88f82592add3";
+const ROLES = ["Vocalist", "Rapper", "Dancer", "All-rounder", "Visual", "Leader"];
+
+const state = {
+  step: 0,
+  converging: false,
+  submitted: false,
+  submitting: false,
+  name: "",
+  complimentText: "",
+  ageCountry: "",
+  email: "",
+  roles: [],
+  whyAndTalent: "",
+  danceLink: "",
+  singLink: "",
+  photoUrl: "",
+  whiteBg: false,
+  photoSkipped: false
+};
+
+function esc(s = "") {
+  return String(s).replace(/[&<>"']/g, m => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[m]));
+}
+
+function getNameCompliment(val) {
+  const clean = val.trim();
+  if (!clean) return "";
+  return `Nice name, ${clean} ✦`;
+}
+
+function render() {
+  const box = document.getElementById("stageContainer");
+  const prog = document.getElementById("progressSection");
+
+  if (state.converging || state.submitted) {
+    prog.style.display = "none";
+    box.innerHTML = `
+      <div class="dossier-stage">
+        <div class="stage-num">${state.submitted ? "APPLICATION RECEIVED" : "CONVERGING STARS INTO DOSSIER"}</div>
+        <div class="folder-emblem ${state.submitted ? "formed" : ""}" id="dossierFolder">📁</div>
+        <h2 class="stage-heading" style="margin-bottom:10px;">
+          ${state.submitted ? "WELCOME TO WILDKIDZ" : "SEALING YOUR FILE..."}
+        </h2>
+        <p style="color:var(--silver-text);line-height:1.65;max-width:460px;margin:0 auto 20px;">
+          ${state.submitted
+            ? `Thank you, ${esc(state.name || "Applicant")}. All floating stars converged into your WILDKIDZ application dossier and were sent to wildkidz1001@gmail.com.`
+            : "Every star on screen is gathering into one file for WOWLD Entertainment..."}
+        </p>
+        ${state.submitted ? `<button type="button" class="btn btn-primary" onclick="resetPortal()">NEW APPLICATION</button>` : ""}
+      </div>`;
+    if (state.submitted) {
+      requestAnimationFrame(() => {
+        const el = document.getElementById("dossierFolder");
+        if (el) el.classList.add("formed");
+      });
+    }
+    return;
+  }
+
+  prog.style.display = "block";
+  const pct = Math.round(((state.step + 1) / 7) * 100);
+  document.getElementById("progressLabel").textContent = `STEP 0${state.step + 1} OF 07`;
+  document.getElementById("progressPct").textContent = `${pct}%`;
+  document.getElementById("progressFill").style.width = `${pct}%`;
+
+  const steps = [
+    `
+      <div class="stage-num">01 — NAME</div>
+      <h2 class="stage-heading">WHAT IS YOUR NAME?</h2>
+      <div class="field">
+        <label>Your Name (Press Enter for a boost)</label>
+        <input id="nameInput" value="${esc(state.name)}" placeholder="e.g. Zoe">
+        <div class="compliment" id="nameCompliment">${esc(state.complimentText)}</div>
+      </div>
+    `,
+    `
+      <div class="stage-num">02 — AGE & COUNTRY</div>
+      <h2 class="stage-heading">AGE & WHERE YOU'RE FROM</h2>
+      <div class="field">
+        <label>Your Age & Country</label>
+        <input id="ageCountryInput" value="${esc(state.ageCountry)}" placeholder="e.g. 15 — South Africa">
+      </div>
+    `,
+    `
+      <div class="stage-num">03 — EMAIL</div>
+      <h2 class="stage-heading">YOUR EMAIL ADDRESS</h2>
+      <div class="field">
+        <label>Email for WILDKIDZ Updates</label>
+        <input id="emailInput" type="email" value="${esc(state.email)}" placeholder="name@example.com">
+      </div>
+    `,
+    `
+      <div class="stage-num">04 — CATEGORY</div>
+      <h2 class="stage-heading">CHOOSE YOUR POSITIONS</h2>
+      <label>Select One or More</label>
+      <div class="chips" id="roleChips">
+        ${ROLES.map(r => `<button type="button" class="chip ${state.roles.includes(r) ? "active" : ""}" data-role="${r}">${r}</button>`).join("")}
+      </div>
+    `,
+    `
+      <div class="stage-num">05 — WHY WILDKIDZ</div>
+      <h2 class="stage-heading">WHY WILDKIDZ & YOUR TALENT</h2>
+      <div class="field">
+        <label>Why WILDKIDZ & What Makes You Shine?</label>
+        <textarea id="whyInput" placeholder="Tell us why you want WILDKIDZ and what you bring...">${esc(state.whyAndTalent)}</textarea>
+      </div>
+    `,
+    `
+      <div class="stage-num">06 — DANCE & SINGING LINKS</div>
+      <h2 class="stage-heading">PERFORMANCE VIDEO LINKS</h2>
+      <div class="media-box">
+        <div class="field">
+          <label>Dancing Video Link (https:// TikTok / IG / YouTube)</label>
+          <input id="danceInput" type="url" value="${esc(state.danceLink)}" placeholder="https://www.tiktok.com/... or https://youtube.com/...">
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>Singing Video Link (https:// TikTok / IG / YouTube)</label>
+          <input id="singInput" type="url" value="${esc(state.singLink)}" placeholder="https://www.instagram.com/... or https://youtube.com/...">
+        </div>
+      </div>
+    `,
+    `
+      <div class="stage-num">07 — PHOTO & SIGN</div>
+      <h2 class="stage-heading">PHOTO & FINAL SIGN</h2>
+      <div class="media-box">
+        <label>Optional Photo Attachment</label>
+        <input id="photoInput" type="file" accept="image/*">
+        <div class="row-actions">
+          <button type="button" class="btn" onclick="toggleWhiteBg()">WHITE BG: ${state.whiteBg ? "ON" : "OFF"}</button>
+          <button type="button" class="btn" onclick="skipPhoto()">SKIP PHOTO</button>
+          ${state.photoUrl ? `<button type="button" class="btn" onclick="clearPhoto()">REMOVE</button>` : ""}
+        </div>
+        ${state.photoUrl && !state.photoSkipped ? `<img src="${state.photoUrl}" alt="Preview" class="preview-img ${state.whiteBg ? "white-bg" : ""}">` : ""}
+        ${state.photoSkipped ? `<div class="compliment" style="color:var(--silver-text);">Photo skipped.</div>` : ""}
+      </div>
+    `
+  ];
+
+  const isLast = state.step === 6;
+  box.innerHTML = `
+    ${steps[state.step]}
+    <div class="error-msg" id="errMsg"></div>
+    <div class="nav-bar">
+      <button type="button" class="btn" onclick="prevStep()" ${state.step === 0 ? "disabled" : ""}>PREVIOUS</button>
+      <button type="button" class="btn ${isLast ? "btn-red" : "btn-primary"}" onclick="${isLast ? "signAndSubmit()" : "nextStep()"}">
+        ${isLast ? "SIGN & SUBMIT" : "NEXT"}
+      </button>
+    </div>
+  `;
+
+  bindEvents();
+}
+
+function bindEvents() {
+  const nameEl = document.getElementById("nameInput");
+  if (nameEl) {
+    nameEl.addEventListener("input", e => {
+      state.name = e.target.value;
+      state.complimentText = getNameCompliment(state.name);
+      const comp = document.getElementById("nameCompliment");
+      if (comp) comp.textContent = state.complimentText;
+    });
+    nameEl.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        state.name = nameEl.value;
+        state.complimentText = getNameCompliment(state.name) || "Nice name ✦";
+        const comp = document.getElementById("nameCompliment");
+        if (comp) comp.textContent = state.complimentText;
+        const rect = nameEl.getBoundingClientRect();
+        spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 18);
+      }
+    });
+  }
+
+  const ageEl = document.getElementById("ageCountryInput");
+  if (ageEl) ageEl.addEventListener("input", e => { state.ageCountry = e.target.value; });
+
+  const emailEl = document.getElementById("emailInput");
+  if (emailEl) emailEl.addEventListener("input", e => { state.email = e.target.value; });
+
+  const whyEl = document.getElementById("whyInput");
+  if (whyEl) whyEl.addEventListener("input", e => { state.whyAndTalent = e.target.value; });
+
+  const danceEl = document.getElementById("danceInput");
+  if (danceEl) danceEl.addEventListener("input", e => { state.danceLink = e.target.value; });
+
+  const singEl = document.getElementById("singInput");
+  if (singEl) singEl.addEventListener("input", e => { state.singLink = e.target.value; });
+
+  document.querySelectorAll("#roleChips .chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const r = chip.dataset.role;
+      state.roles = state.roles.includes(r) ? state.roles.filter(x => x !== r) : [...state.roles, r];
+      render();
+    });
+  });
+
+  const photoEl = document.getElementById("photoInput");
+  if (photoEl) {
+    photoEl.addEventListener("change", e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        state.photoUrl = reader.result;
+        state.photoSkipped = false;
+        render();
+      };
+      reader.readAsDataURL(f);
+    });
+  }
+}
+
+function toggleWhiteBg() { state.whiteBg = !state.whiteBg; render(); }
+function skipPhoto() { state.photoSkipped = true; state.photoUrl = ""; render(); }
+function clearPhoto() { state.photoUrl = ""; state.photoSkipped = false; render(); }
+
+function validHttps(url) {
+  const t = url.trim();
+  if (!t) return true;
+  return /^https:\/\/.+/i.test(t);
+}
+
+function validateStep(idx) {
+  const err = document.getElementById("errMsg");
+  if (idx === 0 && !state.name.trim()) {
+    err.textContent = "Please enter your name.";
+    return false;
+  }
+  if (idx === 1 && !state.ageCountry.trim()) {
+    err.textContent = "Please enter your age and country.";
+    return false;
+  }
+  if (idx === 2 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email.trim())) {
+    err.textContent = "Please enter a valid email address.";
+    return false;
+  }
+  if (idx === 3 && !state.roles.length) {
+    err.textContent = "Select at least one category.";
+    return false;
+  }
+  if (idx === 4 && !state.whyAndTalent.trim()) {
+    err.textContent = "Please share why WILDKIDZ and your talent.";
+    return false;
+  }
+  if (idx === 5 && (!validHttps(state.danceLink) || !validHttps(state.singLink))) {
+    err.textContent = "Links must start with https:// (or leave blank).";
+    return false;
+  }
+  return true;
+}
+
+function nextStep() {
+  if (!validateStep(state.step)) return;
+  if (state.step < 6) {
+    state.step += 1;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+function prevStep() {
+  if (state.step > 0) {
+    state.step -= 1;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+}
+
+async function signAndSubmit() {
+  if (!validateStep(state.step)) return;
+  state.converging = true;
+  starMode = "converge";
+  render();
+
+  const payload = {
+    access_key: WEB3FORMS_ACCESS_KEY,
+    subject: `WILDKIDZ Dossier — ${state.name} (${state.roles.join(", ")})`,
+    from_name: "WILDKIDZ Application Portal",
+    replyto: state.email,
+    Name: state.name,
+    Compliment: state.complimentText || getNameCompliment(state.name),
+    Age_And_Country: state.ageCountry,
+    Email: state.email,
+    Positions: state.roles.join(", "),
+    Why_WILDKIDZ_And_Talent: state.whyAndTalent,
+    Dancing_Video_Link: state.danceLink || "Not provided",
+    Singing_Video_Link: state.singLink || "Not provided",
+    Photo_Status: state.photoSkipped ? "Skipped" : (state.photoUrl ? (state.whiteBg ? "Attached (White BG)" : "Attached") : "None")
+  };
+
+  try {
+    await Promise.all([
+      new Promise(r => setTimeout(r, 1150)),
+      fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify(payload)
+      })
+    ]);
+  } catch (_) {}
+
+  state.converging = false;
+  state.submitted = true;
+  starMode = "falling";
+  render();
+}
+
+function resetPortal() {
+  state.step = 0;
+  state.converging = false;
+  state.submitted = false;
+  state.name = "";
+  state.complimentText = "";
+  state.ageCountry = "";
+  state.email = "";
+  state.roles = [];
+  state.whyAndTalent = "";
+  state.danceLink = "";
+  state.singLink = "";
+  state.photoUrl = "";
+  state.whiteBg = false;
+  state.photoSkipped = false;
+  starMode = "falling";
+  render();
+}
+
+/* Visible slow-motion falling silver stars + tap bursts + converge into dossier */
+const canvas = document.getElementById("starCanvas");
+const ctx = canvas.getContext("2d");
+let stars = [];
+let bursts = [];
+let starMode = "falling";
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+for (let i = 0; i < 48; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: 4.5 + Math.random() * 6.5,
+    vy: 0.28 + Math.random() * 0.45,
+    swayAmp: 0.45 + Math.random() * 0.95,
+    swaySpeed: 0.009 + Math.random() * 0.012,
+    phase: Math.random() * Math.PI * 2,
+    rot: Math.random() * Math.PI,
+    vRot: (Math.random() - 0.5) * 0.012,
+    alpha: 0.55 + Math.random() * 0.4
+  });
+}
+
+function spawnBurst(x, y, count = 12) {
+  for (let i = 0; i < count; i++) {
+    const ang = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.35;
+    const spd = 1.6 + Math.random() * 3.4;
+    bursts.push({
+      x,
+      y,
+      vx: Math.cos(ang) * spd,
+      vy: Math.sin(ang) * spd - 0.8,
+      r: 3 + Math.random() * 4,
+      rot: Math.random() * Math.PI,
+      vRot: (Math.random() - 0.5) * 0.14,
+      life: 1
+    });
+  }
+}
+
+window.addEventListener("pointerdown", e => {
+  spawnBurst(e.clientX, e.clientY, 12);
+});
+
+function drawStar(x, y, r, rot, alpha, fill = "#9AA4B2", stroke = "#6F7886") {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rot);
+  ctx.globalAlpha = Math.max(0, Math.min(1, alpha));
+  const outer = r * 2.2;
+  const inner = r * 0.44;
+  ctx.beginPath();
+  for (let i = 0; i < 8; i++) {
+    const rad = i % 2 === 0 ? outer : inner;
+    const ang = (i * Math.PI) / 4;
+    const px = Math.cos(ang) * rad;
+    const py = Math.sin(ang) * rad;
+    if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+  }
+  ctx.closePath();
+  ctx.fillStyle = fill;
+  ctx.fill();
+  ctx.lineWidth = 0.9;
+  ctx.strokeStyle = stroke;
+  ctx.stroke();
+  ctx.restore();
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const cx = canvas.width / 2;
+  const cy = Math.min(canvas.height * 0.42, 320);
+
+  for (const s of stars) {
+    if (starMode === "converge") {
+      s.x += (cx - s.x) * 0.085;
+      s.y += (cy - s.y) * 0.085;
+      s.rot += 0.12;
+      drawStar(s.x, s.y, s.r * 0.85, s.rot, s.alpha, "#B2BCC9", "#6E1C2B");
+    } else {
+      s.phase += s.swaySpeed;
+      s.x += Math.sin(s.phase) * s.swayAmp;
+      s.y += s.vy;
+      s.rot += s.vRot;
+      if (s.y > canvas.height + 28) {
+        s.y = -28;
+        s.x = Math.random() * canvas.width;
+      }
+      if (s.x < -28) s.x = canvas.width + 28;
+      if (s.x > canvas.width + 28) s.x = -28;
+      drawStar(s.x, s.y, s.r, s.rot, s.alpha);
+    }
+  }
+
+  for (let i = bursts.length - 1; i >= 0; i--) {
+    const b = bursts[i];
+    b.x += b.vx;
+    b.y += b.vy;
+    b.vy += 0.06;
+    b.rot += b.vRot;
+    b.life -= 0.028;
+    if (b.life <= 0) {
+      bursts.splice(i, 1);
+      continue;
+    }
+    drawStar(b.x, b.y, b.r, b.rot, b.life, "#C4CDD8", "#6E1C2B");
+  }
+
+  requestAnimationFrame(animate);
+}
+
+animate();
+render();
+</script>
+</body>
+</html>
