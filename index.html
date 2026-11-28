@@ -785,6 +785,12 @@ function animate() {
 
   requestAnimationFrame(animate);
 }
+const emailSent = await submitApplicationToEmail(applicationData);
+if (!emailSent) {
+  alert("Network error sending application. Please try submitting again.");
+  return;
+}
+// Show confirmation screen with applicationData.refNumber
 
 animate();
 render();
